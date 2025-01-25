@@ -1,0 +1,72 @@
+.container {
+    height: 130px;
+    display: flex;
+    gap: 10px;
+}
+
+.container > img {
+    border: 1px solid black;
+    width: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.container > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.container > div > a {
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    color: black;
+}
+
+.container > div > h4 {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.container > div > div:nth-of-type(1) span {
+    color: rgb(112, 112, 112);
+    font-size: 13px;
+}
+
+.container > div > div:nth-of-type(1) span:nth-of-type(1) {
+    padding-right: 20px;
+    border-right: 1px solid rgb(168, 168, 168);
+}
+.container > div > div:nth-of-type(1) span:nth-of-type(2) {
+    padding: 0px 20px;
+    border-right: 1px solid rgb(168, 168, 168);
+}
+.container > div > div:nth-of-type(1) span:nth-of-type(3) {
+    padding-left: 20px;
+}
+
+.container > div > div:nth-of-type(2) {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.container > div > div:nth-of-type(2) button {
+    cursor: pointer;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(233, 233, 233, 0.573);
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container > div > div:nth-of-type(2) button.active {
+    color: rgb(255, 45, 80);
+}

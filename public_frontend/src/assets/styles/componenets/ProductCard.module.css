@@ -1,0 +1,237 @@
+.container {
+    position: relative;
+    padding-bottom: 170%;
+}
+
+.subContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.upperSection {
+    position: relative;
+    height: 86%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 10px;
+    gap: 5px;
+}
+
+.upperSection a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+}
+
+.upperSection a img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.upperSection .promotionContainer {
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    gap: 5px;
+}
+
+.upperSection .promotionContainer div {
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 5px;
+}
+
+.upperSection .promotionContainer div:nth-of-type(1) {
+    background-color: #e04f4f;
+    color: white;
+    border-radius: 3px;
+}
+
+.upperSection .promotionContainer div:nth-of-type(2) {
+    background-color: white;
+    border-radius: 3px;
+}
+.upperSection .actions {
+    position: relative;
+    z-index: 2;
+    background-color: black;
+    width: 100%;
+    height: 20px;
+    display: flex;
+    cursor: pointer;
+    height: 0px;
+    transition: ease 0.2s all;
+    overflow: hidden;
+}
+
+.upperSection .actions.active {
+    height: 20px;
+    overflow: visible;
+}
+
+.upperSection .actions > div {
+    width: 50%;
+    background-color: white;
+}
+
+.upperSection .actions > button {
+    width: 50%;
+    color: white;
+    background-color: black;
+    border: none;
+}
+
+.upperSection .actions > button.active {
+    background-color: rgb(48, 164, 48);
+    cursor: pointer;
+}
+
+.upperSection .actions .sizeDropdown {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border: 1px solid black;
+}
+
+.upperSection .actions .sizeDropdown .sizes {
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: white;
+    width: 50%;
+    font-size: 13px;
+    color: black;
+    border: 1px solid black;
+}
+
+.upperSection .actions .sizeDropdown .size {
+    font-size: 12px;
+    padding: 5px 10px;
+    padding-left: 10px;
+}
+
+.upperSection .actions .sizeDropdown.active .sizes {
+    display: block;
+}
+
+.upperSection .actions .sizeDropdown .sizeHolder {
+    color: black;
+}
+
+.upperSection .actions .sizeDropdown.active .sizeHolder {
+    display: none;
+}
+
+
+.lowerSection {
+    position: relative;
+    height: 14%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+.lowerSection .wishBtn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    font-size: 16px;
+    background-color: rgb(255, 255, 255);
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 4px 2px rgba(172, 172, 172, 0.407);
+}
+
+.lowerSection > h1 {
+    font-size: 13px;
+    font-weight: 400;
+}
+.lowerSection .price {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lowerSection .price.discounted {
+    color: #e04f4f;
+}
+
+.lowerSection .price.discounted span {
+    color: black;
+    text-decoration: line-through;
+}
+
+.lowerSection .colorsCount {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgb(151, 151, 151);
+}
+
+.lowerSection .colorsContainer {
+    display: none;
+    gap: 5px;
+}
+
+.lowerSection .colorsContainer.visible {
+    display: flex;
+}
+
+.lowerSection .colorsContainer > div {
+    position: relative;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    box-shadow: 0px 0px 1px 1px rgb(201, 201, 201);
+    cursor: pointer;
+}
+
+.lowerSection .colorsContainer > div.selected {
+    border: 1px solid black;
+}
+
+.lowerSection .colorsContainer > div:hover label {
+    display: block;
+}
+
+.lowerSection .colorsContainer > div label {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0px 0px 2px 2px rgba(64, 64, 64, 0.095);
+    border-radius: 2px;
+    z-index: 1;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    padding: 10px 10px;
+    display: none;
+}
+
+.hide {
+    display: none;
+}

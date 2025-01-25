@@ -1,0 +1,8 @@
+.main {
+    position: relative;
+    width: 100%;
+}
+
+.contentconatiner {
+    min-height: 100vh;
+}
