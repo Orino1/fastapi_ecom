@@ -32,3 +32,4 @@ class UserUpdate(SQLModel):
 # user output
 class UserOutput(UserBase):
     id: int
+    disabled: bool
