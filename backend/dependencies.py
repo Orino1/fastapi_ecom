@@ -174,5 +174,11 @@ AdminAccessDep = Annotated[dict, Depends(get_current_admin_from_access)]
 UserRefreshDep = Annotated[dict, Depends(get_current_user_from_refresh)]
 AdminRefreshDep = Annotated[dict, Depends(get_current_admin_from_refresh)]
 
+RawUserAccessDep = Depends(get_current_user_from_access)
+RawAdminAccessDep = Depends(get_current_admin_from_access)
+
+RawUserRefreshDep = Depends(get_current_user_from_refresh)
+RawAdminRefreshDep = Depends(get_current_admin_from_refresh)
+
 
 LoginFormDep = Annotated[OAuth2PasswordRequestForm, Depends()]
