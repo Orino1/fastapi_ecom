@@ -134,6 +134,7 @@ class VariantColorCreate(SQLModel):
 
 class VariantColor(VariantColorCreate, table=True):
     id: int = Field(default=None, primary_key=True)
+    variants: list[ProductVariant] = Relationship(back_populates="color")
 
 
 class VariantColorOutput(SQLModel):
@@ -145,5 +146,6 @@ class VariantColorOutput(SQLModel):
 class VariantColorUpdate(SQLModel):
     name: str = Field(default=None, min_length=1, max_length=100, unique=True)
     hex_value: str = Field(default=None, min_length=7, max_length=7, unique=True)
+
 
 from .sizes import Size
