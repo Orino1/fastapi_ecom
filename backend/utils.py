@@ -31,7 +31,7 @@ def create_access_token(data: dict, is_admin: bool = False) -> str:
     Returns:
         str: The generated access token.
     """
-    to_encode = data.copy()
+    to_encode = {"sub": data.id}
     expire_in = datetime.now() + timedelta(minutes=ACCESS_EXPIRE)
 
     to_encode.update({"exp": expire_in, "is_admin": is_admin})
@@ -51,7 +51,7 @@ def create_refresh_token(data: dict, is_admin: bool = False) -> str:
     Returns:
         str: The generated refresh token.
     """
-    to_encode = data.copy()
+    to_encode = {"sub": data.id}
     expire_in = datetime.now() + timedelta(days=REFRESH_EXPIRE)
 
     to_encode.update({"exp": expire_in, "is_admin": is_admin})
