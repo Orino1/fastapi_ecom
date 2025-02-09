@@ -8,6 +8,8 @@ from jwt.exceptions import (DecodeError, ExpiredSignatureError,
 from sqlmodel import Session
 
 from .models import get_session
+from .models.admin import Admin
+from .models.users import User
 from .utils import ALGORITHM, KEY, TokenType
 
 """
@@ -84,7 +86,7 @@ def get_refresh_token_from_cookie(request: Request) -> str:
     return refresh_token
 
 
-def get_current_user_from_access(token: str = Depends(oauth2_scheme)) -> dict:
+def get_current_user_payload_from_access(token: str = Depends(oauth2_scheme)) -> int:
     """
     Get the current user payload from the access token.
 
@@ -95,15 +97,15 @@ def get_current_user_from_access(token: str = Depends(oauth2_scheme)) -> dict:
         HTTPException: If the token is invalid or belongs to an admin.
 
     Returns:
-        dict: The decoded payload of the token.
+        dict: Resource ID from the decoded payload of the token.
     """
     payload = validate_token(token, TokenType.ACCESS)
     if "is_admin" in payload and payload["is_admin"]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not a user")
-    return payload
+    return payload.sub
 
 
-def get_current_admin_from_access(token: str = Depends(oauth2_scheme)) -> dict:
+def get_current_admin_payload_from_access(token: str = Depends(oauth2_scheme)) -> int:
     """
     Get the current admin payload from the access token.
 
@@ -114,19 +116,19 @@ def get_current_admin_from_access(token: str = Depends(oauth2_scheme)) -> dict:
         HTTPException: If the token is invalid or not for an admin.
 
     Returns:
-        dict: The decoded payload of the token.
+        dict: Resource ID from the decoded payload of the token.
     """
     payload = validate_token(token, TokenType.ACCESS)
     if "is_admin" not in payload or not payload["is_admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not an admin"
         )
-    return payload
+    return payload.sub
 
 
-def get_current_user_from_refresh(
+def get_current_user_payload_from_refresh(
     refresh_token: str = Depends(get_refresh_token_from_cookie),
-) -> dict:
+) -> int:
     """
     Get the current user from the refresh token.
 
@@ -137,17 +139,17 @@ def get_current_user_from_refresh(
         HTTPException: If the token is invalid or belongs to an admin.
 
     Returns:
-        dict: The decoded payload of the refresh token.
+        dict: Resource ID from the decoded payload of the refresh token.
     """
     payload = validate_token(refresh_token, TokenType.REFRESH)
     if "is_admin" in payload and payload["is_admin"]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not a user")
-    return payload
+    return payload.sub
 
 
-def get_current_admin_from_refresh(
+def get_current_admin_payload_from_refresh(
     refresh_token: str = Depends(get_refresh_token_from_cookie),
-) -> dict:
+) -> int:
     """
     Get the current user from the refresh token.
 
@@ -158,27 +160,72 @@ def get_current_admin_from_refresh(
         HTTPException: If the token is invalid or not for an admin.
 
     Returns:
-        dict: The decoded payload of the refresh token.
+        int: Resource ID from the decoded payload of the refresh token.
     """
     payload = validate_token(refresh_token, TokenType.REFRESH)
     if "is_admin" not in payload or not payload["is_admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not an admin"
         )
-    return payload
+    return payload.sub
 
 
-UserAccessDep = Annotated[dict, Depends(get_current_user_from_access)]
-AdminAccessDep = Annotated[dict, Depends(get_current_admin_from_access)]
+# helper functions to retrives user/admin models
+def get_user_model_from_access(
+    session: SessionDep, user_id: int = Depends(get_current_user_payload_from_access)
+) -> User:
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    return user
 
-UserRefreshDep = Annotated[dict, Depends(get_current_user_from_refresh)]
-AdminRefreshDep = Annotated[dict, Depends(get_current_admin_from_refresh)]
 
-RawUserAccessDep = Depends(get_current_user_from_access)
-RawAdminAccessDep = Depends(get_current_admin_from_access)
+def get_user_model_from_refresh(
+    session: SessionDep, user_id: int = Depends(get_current_user_payload_from_refresh)
+) -> User:
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    return user
 
-RawUserRefreshDep = Depends(get_current_user_from_refresh)
-RawAdminRefreshDep = Depends(get_current_admin_from_refresh)
+
+def get_admin_model_from_access(
+    session: SessionDep, admin_id: int = Depends(get_current_admin_payload_from_access)
+) -> User:
+    admin = session.get(Admin, admin_id)
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Admin not found"
+        )
+    return admin
+
+
+def get_admin_model_from_refresh(
+    session: SessionDep, admin_id: int = Depends(get_current_admin_payload_from_refresh)
+) -> User:
+    admin = session.get(Admin, admin_id)
+    if not admin:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Admin not found"
+        )
+    return admin
+
+
+UserAccessDep = Annotated[User, Depends(get_user_model_from_access)]
+AdminAccessDep = Annotated[Admin, Depends(get_admin_model_from_access)]
+
+UserRefreshDep = Annotated[User, Depends(get_user_model_from_refresh)]
+AdminRefreshDep = Annotated[Admin, Depends(get_admin_model_from_refresh)]
+
+RawUserAccessDep = Depends(get_current_user_payload_from_access)
+RawAdminAccessDep = Depends(get_current_admin_payload_from_access)
+
+RawUserRefreshDep = Depends(get_current_user_payload_from_refresh)
+RawAdminRefreshDep = Depends(get_current_admin_payload_from_refresh)
 
 
 LoginFormDep = Annotated[OAuth2PasswordRequestForm, Depends()]
