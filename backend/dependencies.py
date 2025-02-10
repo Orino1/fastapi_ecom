@@ -102,7 +102,7 @@ def get_current_user_payload_from_access(token: str = Depends(oauth2_scheme)) ->
     payload = validate_token(token, TokenType.ACCESS)
     if "is_admin" in payload and payload["is_admin"]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not a user")
-    return payload.sub
+    return int(payload["sub"])
 
 
 def get_current_admin_payload_from_access(token: str = Depends(oauth2_scheme)) -> int:
@@ -123,7 +123,7 @@ def get_current_admin_payload_from_access(token: str = Depends(oauth2_scheme)) -
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not an admin"
         )
-    return payload.sub
+    return int(payload["sub"])
 
 
 def get_current_user_payload_from_refresh(
@@ -144,7 +144,7 @@ def get_current_user_payload_from_refresh(
     payload = validate_token(refresh_token, TokenType.REFRESH)
     if "is_admin" in payload and payload["is_admin"]:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not a user")
-    return payload.sub
+    return int(payload["sub"])
 
 
 def get_current_admin_payload_from_refresh(
@@ -167,7 +167,7 @@ def get_current_admin_payload_from_refresh(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not an admin"
         )
-    return payload.sub
+    return int(payload["sub"])
 
 
 # helper functions to retrives user/admin models
