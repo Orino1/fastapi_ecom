@@ -51,7 +51,7 @@ class ProductVariantBase(SQLModel):
 class ProductVariant(ProductVariantBase, table=True):
     id: int = Field(default=None, primary_key=True)
     product_id: int = Field(..., foreign_key="product.id")
-    thumbnail_id: int = Field(..., foreign_key="thumbnail.id")
+    thumbnail_id: int = Field(..., foreign_key="variantthumbnail.id")
 
     product: Product = Relationship(back_populates="variants")
     color: "VariantColor" = Relationship(back_populates="variants")
