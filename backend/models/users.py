@@ -18,7 +18,6 @@ class User(UserBase, table=True):
 
 # user input create ( schema we get from the request )
 class UserCreate(UserBase):
-    email: EmailStr
     password: str = Field(min_length=1, max_length=16)
 
 
@@ -33,3 +32,9 @@ class UserUpdate(SQLModel):
 class UserOutput(UserBase):
     id: int
     disabled: bool
+
+
+# user output for login route
+class LoginResponse(SQLModel):
+    user: UserOutput
+    access_token: str
