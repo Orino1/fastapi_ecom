@@ -110,7 +110,7 @@ class VariantThumbnailBase(SQLModel):
 
 class VariantThumbnail(VariantThumbnailBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    variant_id: int = Field(..., foreign_key="productvariant.id")
+
     variant: "ProductVariant" = Relationship(back_populates="thumbnail")
 
 
