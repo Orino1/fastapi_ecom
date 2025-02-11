@@ -5,6 +5,8 @@ from enum import Enum
 import jwt
 from passlib.context import CryptContext
 
+from .models.admin import Admin
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -59,3 +61,12 @@ def create_refresh_token(data: str, is_admin: bool = False) -> str:
     refresh_token = jwt.encode(to_encode, KEY + "refresh", ALGORITHM)
 
     return refresh_token
+
+
+def check_admin_permissions(admin: Admin, permission: str):
+    for admin_role in admin.roles:
+        for role_perm in admin_role.role.permissions:
+            if role_perm.permission.name == permission:
+                return True
+
+    return False
