@@ -96,7 +96,11 @@ def login_user(response: Response, login_data: LoginFormDep, session: SessionDep
 
     user = session.exec(select(User).filter_by(email=email)).first()
 
-    if not user or not pwd_context.verify(password, user.hashed_password):
+    if (
+        not user
+        or not pwd_context.verify(password, user.hashed_password)
+        or user.disabled
+    ):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Check email or password"
         )
@@ -110,12 +114,16 @@ def login_user(response: Response, login_data: LoginFormDep, session: SessionDep
 
 @router.post("/auth/logout", dependencies=[RawUserRefreshDep])
 def logout_user(response: Response) -> Any:
-    response.delete_cookie(key="refresh_token", expires=0)
+    response.delete_cookie(key="refresh_token")
     # access token would be removed from teh frontend by the frontend
     return {"detail": "Successfully logged out"}
 
 
 @router.get("/auth/refresh", response_model=LoginResponse)
 def refresh_user_access_token(user: UserRefreshDep):
+    if user.disabled:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Account disabled"
+        )
     access_token = create_access_token(str(user.id))
     return {"user": user, "access_token": access_token}
