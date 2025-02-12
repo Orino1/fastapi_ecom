@@ -17,6 +17,13 @@ class Admin(AdminBase, table=True):
 
 class AdminInput(AdminBase):
     password: str = Field(min_length=8, max_length=16)
+    role_id: int
+
+
+class AdminUpdate(SQLModel):
+    username: str | None = None
+    password: str | None = Field(default=None, min_length=8, max_length=16)
+    role_id: int | None = None
 
 
 class AdminOutput(AdminBase):
