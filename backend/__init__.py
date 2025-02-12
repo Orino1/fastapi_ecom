@@ -24,6 +24,8 @@ def seed_roles_and_permissions(session: Session):
     permissions = [
         "create_admin",
         "delete_admin",
+        "view_admin",
+        "update_admin",
         "disable_user",
         "create_product",
         "update_product",
@@ -32,10 +34,7 @@ def seed_roles_and_permissions(session: Session):
         "create_category",
         "update_category",
         "delete_category",
-        "create_admin",
-        "view_admin",
-        "update_admin",
-        "delete_admin",
+        "view_roles",
     ]
 
     role_permissions = {
